@@ -177,7 +177,7 @@ export default function Sidebar({ role, nama, subNama }: SidebarProps) {
       )}
 
       <aside className={`
-        fixed top-0 left-0 h-full bg-white border-r border-[#E8E4DD] z-40
+        fixed top-0 left-0 h-full bg-white border-r border-[#E8E4DD] z-50
         transition-all duration-300 ease-in-out shadow-lg
         ${collapsed ? 'w-20' : 'w-64'}
         ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
