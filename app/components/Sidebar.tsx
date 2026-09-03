@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import type { Bab } from './useBabManager'
 
-// Interface untuk menu item
 interface SubMenuItem {
   label: string
   href: string
@@ -31,7 +30,6 @@ export default function Sidebar({ role, nama, subNama }: SidebarProps) {
   const [babList, setBabList] = useState<Bab[]>([])
   const pathname = usePathname()
 
-  // Load bab dari localStorage
   useEffect(() => {
     const saved = localStorage.getItem('sd_santo_paulus_bab_data')
     if (saved) {
@@ -43,17 +41,32 @@ export default function Sidebar({ role, nama, subNama }: SidebarProps) {
     }
   }, [])
 
+  // Auto-collapse saat pathname berubah (klik menu)
+  useEffect(() => {
+    if (!collapsed) {
+      setCollapsed(true)
+    }
+    setExpandedMenu(null)
+    setMobileOpen(false)
+  }, [pathname])
+
+  const handleMenuClick = () => {
+    setExpandedMenu(null)
+    setMobileOpen(false)
+  }
+
   // Menu untuk Guru
   const menuGuru: MenuItem[] = [
     { label: 'Dashboard', icon: '🏠', href: '/dashboard/guru' },
     { 
       label: 'Materi & Bab', 
-      icon: '📚', 
+      icon: '', 
       href: '/dashboard/guru/materi',
       hasSubmenu: true,
       submenu: babList.map(bab => ({
         label: `Bab ${bab.id}: ${bab.judul}`,
-        href: `/dashboard/siswa/materi/${bab.id}`,
+        href: `/materi/${bab.id}`,
+        mapel: bab.mapel,
       }))
     },
     { label: 'Buat Kuis', icon: '📝', href: '/kuis' },
@@ -67,18 +80,19 @@ export default function Sidebar({ role, nama, subNama }: SidebarProps) {
     { 
       label: 'Materi Saya', 
       icon: '📚', 
-      href: '/materi/1',
+      href: '/dashboard/siswa',
       hasSubmenu: true,
       submenu: babList
         .filter(bab => bab.status === 'published')
         .map(bab => ({
           label: `Bab ${bab.id}: ${bab.judul}`,
-          href: `/materi/${bab.id}`,
+          href: `/dashboard/siswa/materi/${bab.id}`,
+          mapel: bab.mapel,
         }))
     },
-    { label: 'Kuis Interaktif', icon: '', href: '/kuis' },
-    { label: 'Nilai Saya', icon: '', href: '#' },
-    { label: 'Pencapaian', icon: '🏆', href: '#' },
+    { label: 'Kuis Interaktif', icon: '🎮', href: '/kuis' },
+    { label: 'Nilai Saya', icon: '📈', href: '#' },
+    { label: 'Pencapaian', icon: '', href: '#' },
   ]
 
   // Menu untuk Orang Tua
@@ -96,17 +110,17 @@ export default function Sidebar({ role, nama, subNama }: SidebarProps) {
     { 
       label: 'Materi Semua Mapel', 
       icon: '📚', 
-      href: '/dashboard/walikelas/materi',
+      href: '/dashboard/walikelas',
       hasSubmenu: true,
       submenu: babList
         .filter(bab => bab.status === 'published')
         .map(bab => ({
           label: `Bab ${bab.id}: ${bab.judul}`,
           href: `/materi/${bab.id}`,
-          mapel: bab.mapel
+          mapel: bab.mapel,
         }))
     },
-    { label: 'Nilai Siswa', icon: '', href: '#' },
+    { label: 'Nilai Siswa', icon: '📊', href: '#' },
     { label: 'Pesan Orang Tua', icon: '💬', href: '#' },
     { label: 'Laporan', icon: '📄', href: '#' },
   ]
@@ -114,10 +128,10 @@ export default function Sidebar({ role, nama, subNama }: SidebarProps) {
   // Menu untuk Admin
   const menuAdmin: MenuItem[] = [
     { label: 'Dashboard Admin', icon: '🏠', href: '/admin' },
-    { label: 'Kelola Guru', icon: '👨‍', href: '/admin/guru' },
-    { label: 'Kelola Siswa', icon: '', href: '/admin/siswa' },
-    { label: 'Kelola Kelas', icon: '🏫', href: '/admin/kelas' },
-    { label: 'Pengaturan', icon: '⚙️', href: '/admin/pengaturan' },
+    { label: 'Kelola Guru', icon: '👨‍🏫', href: '/admin/guru' },
+    { label: 'Kelola Siswa', icon: '👦', href: '/admin/siswa' },
+    { label: 'Kelola Kelas', icon: '', href: '/admin/kelas' },
+    { label: 'Pengaturan', icon: '️', href: '/admin/pengaturan' },
   ]
 
   const menu = role === 'admin' ? menuAdmin
@@ -138,6 +152,12 @@ export default function Sidebar({ role, nama, subNama }: SidebarProps) {
       window.location.href = '/login'
     }
   }
+
+  const roleLabel = role === 'guru' ? 'Guru' 
+    : role === 'siswa' ? 'Siswa' 
+    : role === 'admin' ? 'Admin' 
+    : role === 'walikelas' ? 'Wali Kelas' 
+    : 'Ortu'
 
   return (
     <>
@@ -171,7 +191,7 @@ export default function Sidebar({ role, nama, subNama }: SidebarProps) {
             {!collapsed && (
               <div className="overflow-hidden">
                 <p className="font-bold text-white text-sm truncate">
-                  Panel {role === 'guru' ? 'Guru' : role === 'siswa' ? 'Siswa' : role === 'admin' ? 'Admin' : role === 'walikelas' ? 'Wali Kelas' : 'Ortu'}
+                  Panel {roleLabel}
                 </p>
                 <p className="text-xs text-white/80 truncate">{subNama}</p>
               </div>
@@ -180,7 +200,7 @@ export default function Sidebar({ role, nama, subNama }: SidebarProps) {
         </div>
 
         {/* Menu */}
-        <nav className="p-3 space-y-1 overflow-y-auto h-[calc(100vh-220px)]">
+        <nav className="p-3 space-y-1 overflow-y-auto h-[calc(100vh-180px)]">
           {menu.map((item, index) => (
             <div key={index}>
               {item.hasSubmenu ? (
@@ -224,6 +244,7 @@ export default function Sidebar({ role, nama, subNama }: SidebarProps) {
                               )}
                               <a
                                 href={sub.href}
+                                onClick={handleMenuClick}
                                 className={`block px-3 py-1.5 rounded-lg text-xs transition ${
                                   isActive(sub.href)
                                     ? 'bg-[#B8D4B8] text-[#3D5A3D] font-semibold'
@@ -242,6 +263,7 @@ export default function Sidebar({ role, nama, subNama }: SidebarProps) {
               ) : (
                 <a
                   href={item.href}
+                  onClick={handleMenuClick}
                   className={`flex items-center gap-3 px-3 py-2 rounded-xl transition ${
                     isActive(item.href)
                       ? 'bg-[#5B8C5A] text-white shadow-md'
