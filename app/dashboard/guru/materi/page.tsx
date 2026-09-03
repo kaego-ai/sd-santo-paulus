@@ -28,7 +28,7 @@ export default function ManajemenMateri() {
       alert('Judul bab tidak boleh kosong!')
       return
     }
-    tambahBab(judulBaru)
+    tambahBab(judulBaru, 'IPAS')
     setJudulBaru('')
     setShowForm(false)
   }

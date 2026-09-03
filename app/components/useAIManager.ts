@@ -252,11 +252,11 @@ PENTING:
           }
 
           content = JSON.parse(jsonMatch[0])
-          
-          if (!content.pengantar || !content.materiUtama) {
-            console.warn(`⚠️ Model ${model}: struktur tidak lengkap`)
-            continue
-          }
+
+if (!content || !content.pengantar || !content.materiUtama) {
+  console.warn(`⚠️ Model ${model}: struktur tidak lengkap`)
+  continue
+}
 
           break
         } catch (err) {
