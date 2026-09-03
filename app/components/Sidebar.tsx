@@ -53,7 +53,7 @@ export default function Sidebar({ role, nama, subNama }: SidebarProps) {
       hasSubmenu: true,
       submenu: babList.map(bab => ({
         label: `Bab ${bab.id}: ${bab.judul}`,
-        href: `/materi/${bab.id}`,
+        href: `/dashboard/siswa/materi/${bab.id}`,
       }))
     },
     { label: 'Buat Kuis', icon: '📝', href: '/kuis' },
