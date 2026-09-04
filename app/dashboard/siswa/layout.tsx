@@ -10,7 +10,7 @@ export default function SiswaLayout({ children }: { children: React.ReactNode })
           nama="Andi Wijaya" 
           subNama="Kelas 4B" 
         />
-        <main className="p-4 lg:p-8 max-w-7xl mx-auto">
+        <main className="p-4 lg:p-8 lg:ml-20 transition-all duration-300">
           {children}
         </main>
       </div>
