@@ -70,7 +70,10 @@ export default function KelolaBabMapel({ params }: { params: Promise<{ mapel: st
       <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-[#E8E4DD] p-4 mb-6">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-2 text-sm">
-            <button onClick={() => window.location.href = '/dashboard/guru'} className="text-[#5B8C5A] hover:underline">
+            <button 
+              onClick={() => window.location.href = '/dashboard/guru'} 
+              className="text-[#5B8C5A] hover:underline"
+            >
               ← Kembali ke Dashboard
             </button>
             <span className="text-[#7A7A7A]">/</span>
@@ -127,7 +130,7 @@ export default function KelolaBabMapel({ params }: { params: Promise<{ mapel: st
       <div className="space-y-4 mb-6">
         {filteredBab.length === 0 ? (
           <div className="bg-white rounded-2xl shadow-sm border border-[#E8E4DD] p-12 text-center">
-            <div className="text-6xl mb-4">📚</div>
+            <div className="text-6xl mb-4"></div>
             <p className="text-lg text-[#7A7A7A]">Belum ada bab untuk {mapel.toUpperCase()}</p>
           </div>
         ) : (
@@ -159,7 +162,7 @@ export default function KelolaBabMapel({ params }: { params: Promise<{ mapel: st
                       ? 'bg-[#B8D4B8] text-[#3D5A3D]'
                       : 'bg-[#F5E6C8] text-[#7A5A2A]'
                   }`}>
-                    {bab.status === 'published' ? '⚙️ Published' : '️ Draft'}
+                    {bab.status === 'published' ? '⚙️ Published' : '📝 Draft'}
                   </span>
 
                   <button
@@ -175,7 +178,7 @@ export default function KelolaBabMapel({ params }: { params: Promise<{ mapel: st
                     className="p-2 text-[#5B8C5A] hover:bg-[#B8D4B8] rounded-lg transition"
                     title={bab.status === 'published' ? 'Unpublish' : 'Publish'}
                   >
-                    {bab.status === 'published' ? '' : '🔒'}
+                    {bab.status === 'published' ? '🔓' : '🔒'}
                   </button>
 
                   <button
@@ -206,7 +209,7 @@ export default function KelolaBabMapel({ params }: { params: Promise<{ mapel: st
           Total: {filteredBab.length} Bab ({publishedCount} Published, {draftCount} Draft)
         </p>
         <button className="px-6 py-3 bg-gradient-to-r from-[#6B5B95] to-[#8B7BB5] text-white rounded-xl font-semibold hover:opacity-90 transition">
-           Generate Bab Baru dengan AI
+          ✨ Generate Bab Baru dengan AI
         </button>
       </div>
     </div>
