@@ -40,17 +40,14 @@ export default function DashboardGuru() {
     totalSiswa: 150,
     materiDiupload: babList.length,
     soalDibuat: 156,
-    kelasAktif: 18, // 6 kelas x 3 paralel
+    kelasAktif: 18,
   }
 
   const mapelList = ['IPAS', 'Matematika']
   const kelasOptions = [
-    '1A', '1B', '1C',
-    '2A', '2B', '2C',
-    '3A', '3B', '3C',
-    '4A', '4B', '4C',
-    '5A', '5B', '5C',
-    '6A', '6B', '6C',
+    '1A', '1B', '1C', '2A', '2B', '2C',
+    '3A', '3B', '3C', '4A', '4B', '4C',
+    '5A', '5B', '5C', '6A', '6B', '6C',
   ]
 
   const toggleKelas = (mapel: string, kelas: string) => {
@@ -158,7 +155,7 @@ export default function DashboardGuru() {
 
         <div className="bg-gradient-to-br from-[#E8C4C4] to-[#D4B0B0] rounded-2xl p-5 shadow-sm">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-2xl">🏫</span>
+            <span className="text-2xl"></span>
             <span className="text-sm font-semibold text-[#7A3D3D]">Kelas Aktif</span>
           </div>
           <p className="text-3xl font-bold text-[#7A3D3D]">{stats.kelasAktif}</p>
@@ -178,7 +175,7 @@ export default function DashboardGuru() {
             <div key={mapel} className="bg-white rounded-2xl shadow-sm border border-[#E8E4DD] p-6">
               {/* Header Mapel */}
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">{isIPAS ? '🔬' : '🧮'}</span>
+                <span className="text-2xl">{isIPAS ? '' : '🧮'}</span>
                 <h2 className={`text-2xl font-bold ${isIPAS ? 'text-[#3D5A3D]' : 'text-[#3D5A7A]'}`}>{mapel}</h2>
               </div>
 
@@ -261,7 +258,7 @@ export default function DashboardGuru() {
                 </div>
                 <p className="text-xs text-[#7A7A7A] mt-2">
                   Terpilih: {selectedKelasMapel.length > 0 
-                    ? selectedKelasMapel.map(k => kelas).join(', ') 
+                    ? selectedKelasMapel.join(', ') 
                     : 'Belum ada kelas dipilih'}
                 </p>
               </div>
@@ -279,64 +276,4 @@ export default function DashboardGuru() {
               <div className="space-y-2">
                 <h3 className="text-sm font-semibold text-[#7A7A7A] mb-2">Materi & Bab yang Sudah Diupload</h3>
                 {babMapel.length === 0 ? (
-                  <p className="text-sm text-[#7A7A7A] text-center py-4">Belum ada bab</p>
-                ) : (
-                  babMapel.map(bab => (
-                    <div key={bab.id} className="flex items-center justify-between p-3 bg-[#F7F5F0] rounded-xl hover:bg-[#F0EDE6] transition cursor-pointer"
-                         onClick={() => window.location.href = `/materi/${bab.id}`}>
-                      <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${
-                          bab.status === 'published' ? 'bg-[#5B8C5A]' : 'bg-[#D4B896]'
-                        }`}>
-                          {bab.id}
-                        </div>
-                        <div>
-                          <p className="font-semibold text-[#3D3D3D] text-sm">{bab.judul}</p>
-                          <p className="text-xs text-[#7A7A7A]">Update: {bab.updated}</p>
-                        </div>
-                      </div>
-                      <span className={`text-xs px-3 py-1 rounded-full font-semibold ${
-                        bab.status === 'published'
-                          ? 'bg-[#B8D4B8] text-[#3D5A3D]'
-                          : 'bg-[#F5E6C8] text-[#7A5A2A]'
-                      }`}>
-                        {bab.status === 'published' ? '✓ Published' : '📝 Draft'}
-                      </span>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          )
-        })}
-      </div>
-
-      {/* Panel Kanan */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-gradient-to-br from-[#F5E6E6] to-[#E8D4D4] rounded-2xl p-6">
-          <h3 className="text-xl font-bold text-[#7A3D3D] mb-4">📝 Buat Soal Baru</h3>
-          <div className="grid grid-cols-2 gap-3">
-            {['Pilihan Ganda', 'Uraian/Essay', 'Drag & Drop', 'Menjodohkan'].map((jenis, i) => (
-              <button key={i} className="bg-white/80 backdrop-blur-sm rounded-xl py-3 font-semibold text-[#7A3D3D] hover:bg-white transition shadow-sm">
-                {jenis}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-sm border border-[#E8E4DD] p-6">
-          <h3 className="text-xl font-bold text-[#3D3D3D] mb-4">⚡ Tindakan Cepat</h3>
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            <button className="p-3 bg-[#F0EDE6] rounded-xl hover:bg-[#E8E4DD] transition text-2xl">🔍</button>
-            <button className="p-3 bg-[#F0EDE6] rounded-xl hover:bg-[#E8E4DD] transition text-2xl">📊</button>
-            <button className="p-3 bg-[#F0EDE6] rounded-xl hover:bg-[#E8E4DD] transition text-2xl">💬</button>
-            <button className="p-3 bg-[#F0EDE6] rounded-xl hover:bg-[#E8E4DD] transition text-2xl">⚙️</button>
-          </div>
-          <button className="w-full bg-gradient-to-r from-[#6B5B95] to-[#8B7BB5] text-white rounded-xl py-3 font-semibold hover:opacity-90 transition shadow-md">
-            ✨ Generate dengan AI
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
+                  <p className="text-sm text-[#7A7A7A] text-center py-4"></p>
